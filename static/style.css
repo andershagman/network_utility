@@ -1,0 +1,272 @@
+body {
+      font-family: Arial, sans-serif;
+      background-color: #222;
+      color: white;
+      text-align: center;
+    }
+
+/* Stil för radioknapparna som håller text och cirkel i linje */
+.radio-group label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+/* Samla radio-gruppen snyggt */
+.radio-group {
+  margin-bottom: 16px;
+}
+
+.radio-option {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.radio-option label {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  font-size: 1rem;
+}
+
+.radio-option input[type="radio"] {
+  margin: 0;
+  transform: translateY(1px); /* finjustering vid behov */
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 999;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.7);
+}
+
+.modal-content {
+  background-color: #333;
+  color: white;
+  margin: 10% auto;
+  padding: 20px;
+  border-radius: 8px;
+  width: 300px;
+  text-align: left;
+}
+
+.modal-content input {
+  width: 100%;
+  padding: 8px;
+  margin-top: 8px;
+  margin-bottom: 16px;
+  border-radius: 4px;
+  border: none;
+}
+
+.modal-buttons {
+  text-align: right;
+}
+
+.modal-buttons button {
+  padding: 8px 16px;
+  background-color: #28a745;
+  border: none;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.modal-buttons button:hover {
+  background-color: #218838;
+}
+
+.menu {
+  position: relative;
+  z-index: 10;
+}
+
+.menu-toggle {
+  position: fixed;         /* Så den inte påverkas av andra element */
+  top: 10px;
+  left: 10px;
+  font-size: 28px;
+  cursor: pointer;
+  color: white;
+  background: none;
+  border: none;
+  z-index: 20;
+}
+
+.menu-content {
+  position: fixed;         /* Gör så att den inte påverkar övrigt innehåll */
+  top: 50px;
+  left: 10px;
+  display: none;
+  flex-direction: column;
+  background-color: #333;
+  border: 1px solid #444;
+  border-radius: 5px;
+  min-width: 160px;
+  padding: 10px;
+  z-index: 15;
+  text-align: left; /* Vänsterjustera text */
+}
+
+.menu-content a {
+  color: white;
+  text-decoration: none;
+  padding: 8px 0;
+  display: block;
+}
+
+.menu-content a:hover {
+  background-color: #555;
+}
+
+.menu-content hr {
+  border: none;
+  border-top: 1px solid #555;
+  margin: 8px 0;
+}
+
+.hamburger {
+  font-size: 24px;
+  cursor: pointer;
+}
+.dropdown {
+  display: none;
+  background-color: #333;
+  position: absolute;
+  top: 30px;
+  left: 0;
+  padding: 10px;
+}
+.dropdown a {
+  color: white;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.header input[type="text"] {
+  padding: 8px;
+  font-size: 16px;
+  border-radius: 5px;
+  border: none;
+  width: 220px;
+}
+
+.header button {
+  padding: 8px 16px;
+  font-size: 16px;
+  border-radius: 5px;
+  border: none;
+  background-color: #28a745;
+  color: white;
+  cursor: pointer;
+}
+
+.header button:hover {
+  background-color: #218838;
+}
+    .switch {
+      width: 1090px;
+      background-color: gray;
+      border-radius: 10px;
+      padding: 10px;
+      margin: 20px auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .switch-title {
+      font-weight: bold;
+      margin-bottom: 10px;
+      font-size: 18px;
+    }
+    .port-container {
+      display: flex;
+      gap: 15px;
+      justify-content: flex-start;
+      width: 100%;
+    }
+    .port-group {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      width: 220px;
+      height: 70px;
+      background-color: #444;
+      border-radius: 8px;
+      padding-top: 12px;
+      padding-bottom: 7.5px;
+    }
+    .uplink-group {
+      width: 150px;
+      height: 70px;
+      justify-content: center;
+      align-items: center;
+      background-color: #410;
+      border-radius: 8px;
+      padding-top: 12px;
+      padding-bottom: 7.5px;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+    .port-row {
+      display: flex;
+      gap: 5px;
+      height: 30px;
+      margin-bottom: 5px;
+    }
+    .port {
+      width: 30px;
+      height: 30px;
+      background-color: black;
+      border-radius: 3px;
+      text-align: center;
+      line-height: 30px;
+      color: white;
+      font-size: 12px;
+      position: relative;
+      box-shadow: inset 0px 2px 3px rgba(255, 255, 255, 0.2);
+    }
+    .port::before {
+      content: "";
+      width: 60%;
+      height: 4px;
+      background-color: silver;
+      position: absolute;
+      top: 3px;
+      left: 50%;
+      transform: translateX(-50%);
+      border-radius: 2px;
+    }
+    .port::after {
+      content: "";
+      width: 20%;
+      height: 3px;
+      background-color: gold;
+      position: absolute;
+      bottom: 3px;
+      left: 50%;
+      transform: translateX(-50%);
+      border-radius: 1px;
+    }
+    .connected {
+      background-color: green;
+    }
+    .notused {
+      background-color: orange;
+    }

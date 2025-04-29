@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Ethernet-switchar</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<div class="menu">
+  <div class="hamburger" onclick="toggleMenu()">☰</div>
+  <div class="dropdown" id="dropdown">
+    <a href="/logout">Logga ut</a>
+  </div>
+</div>
+  <div class="header">
+    <h2>Switch:</h2>
+    <input type="text" id="search" placeholder="Skriv switchnamn..." />
+    <button id="fetchButton">Hämta portinfo</button>
+  </div>
+  <div id="container"></div>
+
+  <script src="{{ url_for('static', filename='switch.js') }}"></script>
+</body>
+</html>
