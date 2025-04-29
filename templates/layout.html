@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8">
+  <title>{% block title %}Network Utility{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+  <div class="menu">
+    <div class="menu-toggle" id="menuToggle">&#9776;</div>
+    <div class="menu-content" id="menuContent">
+      <a href="{{ url_for('switches') }}">Switchar</a>
+      <a href="{{ url_for('stats') }}">Statistik</a>
+      <a href="#" id="settings">Inställningar</a>
+      <hr>
+      <a href="{{ url_for('users') }}">Users</a>
+      <a href="{{ url_for('groups') }}">Groups</a>
+      <a href="{{ url_for('permissions') }}">Permissions</a>
+      <hr>
+      <a href="{{ url_for('about') }}">Om</a>
+      <a href="{{ url_for('logout') }}">Logga ut</a>
+    </div>
+  </div>
+
+<div class="content">
+  <p>Testinnehåll i layout.html</p>
+  {% block content %}{% endblock %}
+</div>
+
+  {% include "settings_modal.html" %}
+
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
+  {% block scripts %}{% endblock %}
+</body>
+</html>

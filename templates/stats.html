@@ -1,0 +1,14 @@
+<!-- templates/stats.html -->
+{% extends "layout.html" %}
+
+{% block title %}Statistik{% endblock %}
+
+{% block content %}
+<h1>Statistik: Lediga portar</h1>
+<!-- exempeldata -->
+<ul>
+  {% for switch in switches %}
+    <li>{{ switch.name }} – Lediga portar: {{ switch.free_ports }}</li>
+  {% endfor %}
+</ul>
+{% endblock %}

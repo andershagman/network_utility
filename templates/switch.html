@@ -1,67 +1,14 @@
-<!DOCTYPE html>
-<html lang="sv">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Ethernet-switchar</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-</head>
-<body>
-<div class="menu">
-  <div class="menu-toggle" id="menuToggle">&#9776;</div>
-  <div class="menu-content" id="menuContent">
-    <a href="/">Hem</a>
-    <a href="/statistik">Statistik</a>
-    <a href="#" id="settings">Inställningar</a>
-    <hr>
-    <a href="/users">Users</a>
-    <a href="/groups">Groups</a>
-    <a href="/permissions">Permissions</a>
-    <hr>
-    <a href="/about">Om</a>
-    <a href="/logout">Logga ut</a>
-  </div>
-</div>
+{% extends "layout.html" %}
+
+{% block content %}
   <div class="header">
     <h2>Switch:</h2>
     <input type="text" id="search" placeholder="Skriv switchnamn..." />
     <button id="fetchButton">Hämta portinfo</button>
   </div>
   <div id="container"></div>
+{% endblock %}
 
-<div id="settingsModal" class="modal">
-  <div class="modal-content">
-    <h3>Inställningar</h3>
-
-    <label for="exampleField">Fält 1:</label>
-    <input type="text" id="exampleField" name="exampleField">
-
-    <label for="extraField1">Fält 2:</label>
-    <input type="text" id="extraField1" name="extraField1">
-
-    <label for="extraField2">Fält 3:</label>
-    <input type="text" id="extraField2" name="extraField2">
-
-<div class="radio-option">
-  <label>
-    <input type="radio" name="mode" value="auto">
-    Automatisk
-  </label>
-</div>
-<div class="radio-option">
-  <label>
-    <input type="radio" name="mode" value="manual">
-    Manuell
-  </label>
-</div>
-
-    <div class="modal-buttons">
-      <button id="settingsOkBtn">OK</button>
-    </div>
-  </div>
-</div>
-
-<script src="{{ url_for('static', filename='switch.js') }}"></script>
-
-</body>
-</html>
+{% block scripts %}
+  <script src="{{ url_for('static', filename='switch.js') }}"></script>
+{% endblock %}

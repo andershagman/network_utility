@@ -20,6 +20,31 @@ def switches():
         return redirect(url_for('login'))
     return render_template('switch.html')
 
+@app.route('/stats')
+def stats():
+    # Simulerad data – byt ut mot din egen logik
+    switches = [
+        {'name': 'Switch 1', 'free_ports': 12},
+        {'name': 'Switch 2', 'free_ports': 5},
+    ]
+    return render_template('stats.html', switches=switches)
+
+@app.route('/users')
+def users():
+    return render_template('users.html')
+
+@app.route('/groups')
+def groups():
+    return render_template('groups.html')
+
+@app.route('/permissions')
+def permissions():
+    return render_template('permissions.html')
+
+@app.route('/about')
+def about():
+    return render_template('about.html')
+
 @app.route('/logout')
 def logout():
     session.clear()
