@@ -127,43 +127,4 @@ function createUplinkGroup(uplinkStatus) {
 
 switchData.forEach(sw => createSwitch(sw));
 
-document.getElementById("menuToggle").addEventListener("click", () => {
-  const content = document.getElementById("menuContent");
-  content.style.display = content.style.display === "flex" ? "none" : "flex";
-});
-
-// Visa modalen
-document.getElementById("settings").addEventListener("click", () => {
-  document.getElementById("settingsModal").style.display = "block";
-});
-
-// Göm modalen när OK klickas
-document.getElementById("settingsOkBtn").addEventListener("click", () => {
-  const data = {
-    field1: document.getElementById("exampleField").value,
-    field2: document.getElementById("extraField1").value,
-    field3: document.getElementById("extraField2").value,
-    val: document.querySelector('input[name="mode"]:checked').value
-  };
-
-  fetch("/save-settings", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(data)
-  }).then(response => {
-    if (response.ok) {
-      console.log("Inställningar sparade");
-      document.getElementById("settingsModal").style.display = "none";
-    } else {
-      console.error("Fel vid sparning");
-    }
-  });
-});
-
-// Klick utanför modalen stänger den
-window.addEventListener("click", (e) => {
-  const modal = document.getElementById("settingsModal");
-  if (e.target === modal) {
-    modal.style.display = "none";
-  }
 });
