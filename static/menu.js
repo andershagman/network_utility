@@ -52,4 +52,14 @@ document.addEventListener("DOMContentLoaded", () => {
       modal.style.display = "none";
     }
   });
+
+// Avbryt-knapp stänger modalen
+const cancelBtn = document.getElementById("cancelBtn");
+if (cancelBtn) {
+  cancelBtn.addEventListener("click", () => {
+    const modal = document.getElementById("settingsModal");
+    if (modal) modal.style.display = "none";
+  });
+}
+
 });

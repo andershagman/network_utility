@@ -58,7 +58,7 @@ body {
 }
 
 .modal-content input {
-  width: 100%;
+  width: 90%;
   padding: 8px;
   margin-top: 8px;
   margin-bottom: 16px;
@@ -66,20 +66,35 @@ body {
   border: none;
 }
 
-.modal-buttons {
-  text-align: right;
+.modal-buttons.right-align {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
 }
 
-.modal-buttons button {
+.cancel-button {
   padding: 8px 16px;
-  background-color: #28a745;
+  background-color: #dc3545; /* röd */
   border: none;
   color: white;
   border-radius: 4px;
   cursor: pointer;
 }
 
-.modal-buttons button:hover {
+.cancel-button:hover {
+  background-color: #c82333;
+}
+
+.save-button {
+  padding: 8px 16px;
+  background-color: #28a745; /* grön */
+  border: none;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.save-button:hover {
   background-color: #218838;
 }
 
@@ -115,6 +130,10 @@ body {
   text-align: left; /* Vänsterjustera text */
 }
 
+.menu-content.show {
+  display: flex;
+}
+
 .menu-content a {
   color: white;
   text-decoration: none;
@@ -136,6 +155,7 @@ body {
   font-size: 24px;
   cursor: pointer;
 }
+
 .dropdown {
   display: none;
   background-color: #333;

@@ -125,6 +125,22 @@ function createUplinkGroup(uplinkStatus) {
       container.appendChild(sw);
     }
 
-switchData.forEach(sw => createSwitch(sw));
+function renderSwitches(data) {
+  // Ta bort ev. dummy-siluett
+  document.querySelectorAll(".switch.dummy").forEach(el => el.remove());
 
+  // Töm tidigare renderade switchar (om knappen trycks flera gånger)
+  container.innerHTML = "";
+
+  data.forEach(sw => createSwitch(sw));
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  const button = document.getElementById("fetchButton");
+  if (button) {
+    button.addEventListener("click", () => {
+      renderSwitches(switchData);
+    });
+  }
 });
+
