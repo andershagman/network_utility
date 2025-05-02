@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, session, jsonify, Blueprint
+from flask import Flask, render_template, request, redirect, url_for, session, jsonify
 import json
 
 app = Flask(__name__)
@@ -21,10 +21,9 @@ def switches():
     return render_template('switch.html')
 
 # Gemensam tabellhantering
-bp = Blueprint("views", __name__)
 
-@bp.route("/stats")
-def statistik():
+@app.route("/stats")
+def stats():
     data = [
         {"name": "Switch 1", "ports": 48, "active": 42},
         {"name": "Switch 2", "ports": 24, "active": 18},
@@ -37,7 +36,7 @@ def statistik():
     return render_template("table_view.html", title="Statistik", columns=columns, data=data)
 
 
-@bp.route("/users")
+@app.route("/users")
 def users():
     data = [
         {"username": "alice", "email": "alice@example.com", "role": "admin"},
@@ -51,7 +50,7 @@ def users():
     return render_template("table_view.html", title="Användare", columns=columns, data=data)
 
 
-@bp.route("/groups")
+@app.route("/groups")
 def groups():
     data = [
         {"name": "Nätverksadmin", "members": 5},
@@ -64,7 +63,7 @@ def groups():
     return render_template("table_view.html", title="Grupper", columns=columns, data=data)
 
 
-@bp.route("/permissions")
+@app.route("/permissions")
 def permissions():
     data = [
         {"permission": "access_ports", "description": "Kan se portar"},
