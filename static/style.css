@@ -56,6 +56,14 @@ body {
   font-size: 14px;
 }
 
+/* Färg på aktiv pagineringsknapp (sidnummer) */
+.dataTables_wrapper .dataTables_paginate .paginate_button.current {
+  color: black !important;           /* Textfärg */
+  background-color: #808080 !important; /* Bakgrundsfärg */
+  border: 1px solid #808080 !important;
+  font-weight: bold;
+}
+
 /* Om du har mörk bakgrund, ändra textfärg */
 .dataTables_wrapper {
   color: #f2f2f2;
