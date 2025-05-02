@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, session, jsonify
+from flask import Flask, render_template, request, redirect, url_for, session, jsonify, Blueprint
 import json
 
 app = Flask(__name__)
@@ -20,26 +20,61 @@ def switches():
         return redirect(url_for('login'))
     return render_template('switch.html')
 
-@app.route('/stats')
-def stats():
-    # Simulerad data – byt ut mot din egen logik
-    switches = [
-        {'name': 'Switch 1', 'free_ports': 12},
-        {'name': 'Switch 2', 'free_ports': 5},
+# Gemensam tabellhantering
+bp = Blueprint("views", __name__)
+
+@bp.route("/stats")
+def statistik():
+    data = [
+        {"name": "Switch 1", "ports": 48, "active": 42},
+        {"name": "Switch 2", "ports": 24, "active": 18},
     ]
-    return render_template('stats.html', switches=switches)
+    columns = [
+        {"title": "Namn", "data": "name"},
+        {"title": "Totalt antal portar", "data": "ports"},
+        {"title": "Aktiva portar", "data": "active"},
+    ]
+    return render_template("table_view.html", title="Statistik", columns=columns, data=data)
 
-@app.route('/users')
+
+@bp.route("/users")
 def users():
-    return render_template('users.html')
+    data = [
+        {"username": "alice", "email": "alice@example.com", "role": "admin"},
+        {"username": "bob", "email": "bob@example.com", "role": "user"},
+    ]
+    columns = [
+        {"title": "Användarnamn", "data": "username"},
+        {"title": "E-post", "data": "email"},
+        {"title": "Roll", "data": "role"},
+    ]
+    return render_template("table_view.html", title="Användare", columns=columns, data=data)
 
-@app.route('/groups')
+
+@bp.route("/groups")
 def groups():
-    return render_template('groups.html')
+    data = [
+        {"name": "Nätverksadmin", "members": 5},
+        {"name": "Gäster", "members": 12},
+    ]
+    columns = [
+        {"title": "Gruppnamn", "data": "name"},
+        {"title": "Antal medlemmar", "data": "members"},
+    ]
+    return render_template("table_view.html", title="Grupper", columns=columns, data=data)
 
-@app.route('/permissions')
+
+@bp.route("/permissions")
 def permissions():
-    return render_template('permissions.html')
+    data = [
+        {"permission": "access_ports", "description": "Kan se portar"},
+        {"permission": "edit_users", "description": "Kan ändra användare"},
+    ]
+    columns = [
+        {"title": "Behörighet", "data": "permission"},
+        {"title": "Beskrivning", "data": "description"},
+    ]
+    return render_template("table_view.html", title="Behörigheter", columns=columns, data=data)
 
 @app.route('/about')
 def about():
