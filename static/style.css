@@ -5,6 +5,44 @@ body {
       text-align: center;
     }
 
+    table#dataTable {
+      width: 88%;
+      margin-left: 190px;
+      margin-right: auto;
+      background-color: #f9f9f9;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    table#dataTable th, table#dataTable td {
+      padding: 8px;
+      text-align: left;
+      font-size: 16px;
+    }
+
+    table#dataTable th {
+      background-color: #cc6600;
+      color: white;
+    }
+
+    table#dataTable td {
+      background-color: #ffffff;
+      color: #333;
+    }
+
+    table#dataTable tbody tr:nth-child(even) {
+      background-color: #f2f2f2;
+    }
+
+    table#dataTable tbody tr:hover {
+      background-color: #ddd;
+    }
+
+    table#dataTable_wrapper {
+      margin-left: 20px;
+      margin-right: 20px;
+    }
+
 /* Stil för radioknapparna som håller text och cirkel i linje */
 .radio-group label {
   display: flex;
