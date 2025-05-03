@@ -35,9 +35,23 @@ def stats():
         ports = switch.get("ports", [])
         used = sum(1 for p in ports if p.get("status") == "up")
         free = sum(1 for p in ports if p.get("status") != "up")
-        data.append([name, used, free])  # OBS: lista, inte dict
+        total = used + free
+        used_percent = f'{(used / total) * 100 if total > 0 else 0:.0f}'
+        data.append({
+            "name": name,
+            "used": used,
+            "free": free,
+            "used_percent": used_percent
+        })
 
-    columns = ["Namn", "Använda", "Lediga"]
+    columns = [
+        {"title": "Namn", "data": "name"},
+        {"title": "Använda", "data": "used"},
+        {"title": "Lediga", "data": "free"},
+        {"title": "Använda i %", "data": "used_percent"},
+
+    ]
+
     return render_template("table_view.html", title="Statistik", columns=columns, data=data)
 
 @app.route("/users")
