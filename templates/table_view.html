@@ -11,14 +11,18 @@
       </tr>
     </thead>
     <tbody>
-      {% for row in data %}
-        <tr>
-          {% for col in columns %}
-            <td>{{ row[col.data] }}</td>
-          {% endfor %}
-        </tr>
+  {% for row in data %}
+    <tr>
+      {% for col in columns %}
+        {% if col.data == "name" %}
+          <td>{{ row[col.data] }}</td>
+        {% else %}
+          <td class="right-align">{{ row[col.data] }}</td>
+        {% endif %}
       {% endfor %}
-    </tbody>
+    </tr>
+  {% endfor %}
+</tbody>
   </table>
 {% endblock %}
 

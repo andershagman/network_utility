@@ -37,6 +37,11 @@ body {
     table#dataTable tbody tr:hover {
       background-color: #ddd;
     }
+}
+
+.right-align {
+  text-align: right;
+}
 
 /* Lägg marginal runt hela tabellen */
 #dataTable_wrapper {

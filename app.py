@@ -29,29 +29,22 @@ def switches():
 
 @app.route("/stats")
 def stats():
-    data = []
-    for switch in collection.find():
-        name = switch.get("name", "Okänd")
-        ports = switch.get("ports", [])
-        used = sum(1 for p in ports if p.get("status") == "up")
-        free = sum(1 for p in ports if p.get("status") != "up")
-        total = used + free
-        used_percent = f'{(used / total) * 100 if total > 0 else 0:.0f}'
-        data.append({
-            "name": name,
-            "used": used,
-            "free": free,
-            "used_percent": used_percent
-        })
-
+    switches = collection.find({}, {"name": 1, "used": 1, "free": 1, "used_percent": 1, "_id": 0})
+    data = [
+        {
+            "name": sw["name"],
+            "used": sw.get("used", 0),
+            "free": sw.get("free", 0),
+            "used_percent": f"{sw.get('used_percent', 0)}%"
+        }
+        for sw in switches
+    ]
     columns = [
         {"title": "Namn", "data": "name"},
         {"title": "Använda", "data": "used"},
         {"title": "Lediga", "data": "free"},
-        {"title": "Använda i %", "data": "used_percent"},
-
+        {"title": "Använda %", "data": "used_percent"}
     ]
-
     return render_template("table_view.html", title="Statistik", columns=columns, data=data)
 
 @app.route("/users")
