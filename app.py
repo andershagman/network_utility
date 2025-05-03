@@ -1,8 +1,13 @@
 from flask import Flask, render_template, request, redirect, url_for, session, jsonify
+from pymongo import MongoClient
 import json
 
 app = Flask(__name__)
 app.secret_key = 'hemlig-nyckel'
+
+client = MongoClient("mongodb://localhost:27017")
+db = client["switchdb"]
+collection = db["switches"]
 
 @app.route('/', methods=['GET', 'POST'])
 def login():
@@ -24,17 +29,16 @@ def switches():
 
 @app.route("/stats")
 def stats():
-    data = [
-        {"name": "Switch 1", "ports": 48, "active": 42},
-        {"name": "Switch 2", "ports": 24, "active": 18},
-    ]
-    columns = [
-        {"title": "Namn", "data": "name"},
-        {"title": "Totalt antal portar", "data": "ports"},
-        {"title": "Aktiva portar", "data": "active"},
-    ]
-    return render_template("table_view.html", title="Statistik", columns=columns, data=data)
+    data = []
+    for switch in collection.find():
+        name = switch.get("name", "Okänd")
+        ports = switch.get("ports", [])
+        used = sum(1 for p in ports if p.get("status") == "up")
+        free = sum(1 for p in ports if p.get("status") != "up")
+        data.append([name, used, free])  # OBS: lista, inte dict
 
+    columns = ["Namn", "Använda", "Lediga"]
+    return render_template("table_view.html", title="Statistik", columns=columns, data=data)
 
 @app.route("/users")
 def users():

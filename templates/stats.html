@@ -1,14 +1,43 @@
-<!-- templates/stats.html -->
 {% extends "layout.html" %}
 
-{% block title %}Statistik{% endblock %}
-
 {% block content %}
-<h1>Statistik: Lediga portar</h1>
-<!-- exempeldata -->
-<ul>
-  {% for switch in switches %}
-    <li>{{ switch.name }} – Lediga portar: {{ switch.free_ports }}</li>
-  {% endfor %}
-</ul>
+  <h2>Switchstatistik</h2>
+  <table id="statsTable" class="data-table">
+    <thead>
+      <tr>
+        <th>Namn</th>
+        <th>Använda</th>
+        <th>Lediga</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for row in data %}
+        <tr>
+          <td>{{ row.name }}</td>
+          <td>{{ row.used }}</td>
+          <td>{{ row.free }}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}
+
+{% block scripts %}
+  <script>
+    $(document).ready(function () {
+      $('#statsTable').DataTable({
+        language: {
+          search: "Sök:",
+          lengthMenu: "Visa _MENU_ rader",
+          info: "Visar _START_ till _END_ av _TOTAL_ rader",
+          paginate: {
+            first: "Första",
+            last: "Sista",
+            next: "Nästa",
+            previous: "Föregående"
+          }
+        }
+      });
+    });
+  </script>
 {% endblock %}
