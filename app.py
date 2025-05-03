@@ -40,10 +40,10 @@ def stats():
         for sw in switches
     ]
     columns = [
-        {"title": "Namn", "data": "name"},
-        {"title": "Använda", "data": "used"},
-        {"title": "Lediga", "data": "free"},
-        {"title": "Använda %", "data": "used_percent"}
+        {"title": "Namn", "data": "name", "type": "text"},
+        {"title": "Använda", "data": "used", "type": "numeric"},
+        {"title": "Lediga", "data": "free", "type": "numeric"},
+        {"title": "Använda %", "data": "used_percent", "type": "numeric"},
     ]
     return render_template("table_view.html", title="Statistik", columns=columns, data=data)
 

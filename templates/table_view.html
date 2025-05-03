@@ -3,31 +3,23 @@
 {% block content %}
   <h2>{{ title }}</h2>
   <table id="dataTable" class="display">
-<thead>
-  <tr>
-    {% for col in columns %}
-      {% if col.data == "name" %}
-        <th>{{ col.title }}</th>
-      {% else %}
-        <th class="right-align">{{ col.title }}</th>
-      {% endif %}
-    {% endfor %}
-  </tr>
-</thead>
-    <tbody>
-  {% for row in data %}
+  <thead>
     <tr>
       {% for col in columns %}
-        {% if col.data == "name" %}
-          <td>{{ row[col.data] }}</td>
-        {% else %}
-          <td class="right-align">{{ row[col.data] }}</td>
-        {% endif %}
+        <th class="{{ 'right-align' if col.type == 'numeric' else 'left-align' }}">{{ col.title }}</th>
       {% endfor %}
     </tr>
-  {% endfor %}
-</tbody>
-  </table>
+  </thead>
+  <tbody>
+    {% for row in data %}
+      <tr>
+        {% for col in columns %}
+          <td class="{{ 'right-align' if col.type == 'numeric' else 'left-align' }}">{{ row[col.data] }}</td>
+        {% endfor %}
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
 {% endblock %}
 
 {% block scripts %}
