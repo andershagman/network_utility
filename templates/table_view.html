@@ -3,13 +3,17 @@
 {% block content %}
   <h2>{{ title }}</h2>
   <table id="dataTable" class="display">
-    <thead>
-      <tr>
-        {% for col in columns %}
-          <th>{{ col.title }}</th>
-        {% endfor %}
-      </tr>
-    </thead>
+<thead>
+  <tr>
+    {% for col in columns %}
+      {% if col.data == "name" %}
+        <th>{{ col.title }}</th>
+      {% else %}
+        <th class="right-align">{{ col.title }}</th>
+      {% endif %}
+    {% endfor %}
+  </tr>
+</thead>
     <tbody>
   {% for row in data %}
     <tr>

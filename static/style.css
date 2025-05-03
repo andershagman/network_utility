@@ -39,15 +39,23 @@ body {
     }
 }
 
-.right-align {
-  text-align: right;
-}
-
 /* Lägg marginal runt hela tabellen */
 #dataTable_wrapper {
   margin: 40px auto;
   max-width: 95%;
   margin-left: 190px;
+}
+
+#dataTable th.right-align {
+  text-align: right;
+}
+
+#dataTable th, #dataTable td {
+  white-space: nowrap;
+}
+
+#dataTable td.right-align {
+  text-align: right;
 }
 
 /* Förbättra synlighet på DataTables pagination-knappar */
