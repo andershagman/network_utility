@@ -3,7 +3,8 @@
 {% block content %}
   <div class="header">
     <h2>Switch:</h2>
-    <input type="text" id="search" placeholder="Skriv switchnamn..." />
+    <input type="text" id="switch-name" list="switch-list" placeholder="Ange switchnamn">
+    <datalist id="switch-list"></datalist>
     <button id="fetchButton">Hämta portinfo</button>
   </div>
   <div id="container"></div>
@@ -20,6 +21,20 @@
     </div>
   </div>
 </div>
+
+<script>
+fetch("/api/switch-names")
+  .then(response => response.json())
+  .then(data => {
+    const datalist = document.getElementById("switch-list");
+    data.forEach(name => {
+      const option = document.createElement("option");
+      option.value = name;
+      datalist.appendChild(option);
+    });
+  });
+</script>
+
 {% endblock %}
 
 {% block scripts %}

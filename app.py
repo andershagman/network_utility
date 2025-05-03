@@ -6,7 +6,7 @@ app = Flask(__name__)
 app.secret_key = 'hemlig-nyckel'
 
 client = MongoClient("mongodb://localhost:27017")
-db = client["switchdb"]
+db = client["network"]
 collection = db["switches"]
 
 @app.route('/', methods=['GET', 'POST'])
@@ -19,20 +19,24 @@ def login():
             return render_template('login.html', error='Fel användarnamn eller lösenord')
     return render_template('login.html')
 
+@app.route("/api/switch-names")
+def get_switch_names():
+    names = collection.distinct("name")
+    return jsonify(names)
+
 @app.route('/switches')
 def switches():
     if not session.get('logged_in'):
         return redirect(url_for('login'))
     return render_template('switch.html')
 
-# Gemensam tabellhantering
-
 @app.route("/stats")
 def stats():
-    switches = collection.find({}, {"name": 1, "used": 1, "free": 1, "used_percent": 1, "_id": 0})
+    switches = collection.find({}, {"name": 1, "ip": 1,  "used": 1, "free": 1, "used_percent": 1, "_id": 0})
     data = [
         {
             "name": sw["name"],
+            "ip": sw["ip"],
             "used": sw.get("used", 0),
             "free": sw.get("free", 0),
             "used_percent": f"{sw.get('used_percent', 0)}%"
@@ -41,6 +45,7 @@ def stats():
     ]
     columns = [
         {"title": "Namn", "data": "name", "type": "text"},
+        {"title": "IP-adress", "data": "ip", "type": "text"},
         {"title": "Använda", "data": "used", "type": "numeric"},
         {"title": "Lediga", "data": "free", "type": "numeric"},
         {"title": "Använda %", "data": "used_percent", "type": "numeric"},
