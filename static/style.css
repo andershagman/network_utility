@@ -37,13 +37,18 @@ body {
     table#dataTable tbody tr:hover {
       background-color: #ddd;
     }
+
+/* Vänsterjusterad variant */
+table.left-align td,
+table.left-align th {
+  text-align: left;
 }
 
 /* Lägg marginal runt hela tabellen */
 #dataTable_wrapper {
-  margin: 40px auto;
-  max-width: 95%;
-  margin-left: 190px;
+  width: calc(100% - 200px); /* Justera beroende på menybredd */
+  margin-left: 200px;        /* Skjut hela tabellen åt höger */
+  margin-top: 40px;
 }
 
 #dataTable th.right-align {
