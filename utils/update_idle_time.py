@@ -39,6 +39,10 @@ def extract_lastchange_ticks(line):
 def extract_value(line):
     return line.split(":")[-1].strip()
 
+def extract_operstatus_value(line):
+    match = re.search(r":\s*\w+\((\d+)\)", line)
+    return int(match.group(1)) if match else 2  # fallback = down
+
 def update_idle_times(ip, name):
     print(f"Startar uppdatering för {name} ({ip})")
 
@@ -46,6 +50,9 @@ def update_idle_times(ip, name):
     statuses = snmp_walk(ip, OID_IFOPERSTATUS)
     lastchanges = snmp_walk(ip, OID_IFLASTCHANGE)
     current_uptime = get_sys_uptime(ip)
+
+    print(f"{name}: {len(statuses)} ifOperStatus-poster")
+    print(f"{name}: {len(lastchanges)} ifLastChange-poster")
 
     if not (descrs and statuses and lastchanges and current_uptime):
         print(f"{name}: SNMP timeout or missing data.")
@@ -60,7 +67,8 @@ def update_idle_times(ip, name):
     for line in statuses:
         idx = extract_ifindex(line)
         if idx in port_data:
-            port_data[idx]["status"] = "up" if "1" in line else "down"
+            val = extract_operstatus_value(line)
+            port_data[idx]["status"] = "up" if val == 1 else "down"
 
     for line in lastchanges:
         idx = extract_ifindex(line)
@@ -105,25 +113,37 @@ def update_idle_times(ip, name):
 
     total = len(updated_ports)
 
+    # Efter att updated_ports har byggts
     port_status_map = {}
 
     for p in updated_ports:
         pname = p["name"]
-        status = "connected" if p["status"] == "up" else "notused"
+        status = p["status"]
+        idle = p["idle_time"]
 
+        if status == "up":
+            state = "connected"
+        elif idle > 0:
+            state = "notconnected"
+        else:
+            # Här kan du kolla om porten funnits i old_ports – annars är den "notused"
+            old_idle = old_ports.get(pname, {}).get("idle_time", None)
+            if old_idle is None:
+                state = "notused"
+            else:
+                state = "notconnected"
+
+        # Kortnamn som tidigare
         if "/" in pname:
             parts = pname.split("/")
-            slot = parts[1]  # "0" = vanliga portar, "1" = uplinks
+            slot = parts[1]
             portnum = parts[-1]
-
-            if slot == "0":
-                shortname = portnum  # t.ex. "1", "2", ..., "48"
-            else:
-                shortname = f"U{portnum}"  # t.ex. "U1", "U2", ...
+            shortname = portnum if slot == "0" else f"U{portnum}"
         else:
-            shortname = pname  # Fallback
+            shortname = pname
 
-        port_status_map[shortname] = status 
+        port_status_map[shortname] = state
+        
         free = total - used
         used_percent = round(100 * used / total, 1) if total else 0
 
