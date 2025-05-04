@@ -33,6 +33,14 @@ def fetch_portinfo():
     update_idle_times(switch["ip"], switch["name"])
     return {"status": "ok"}
 
+@app.route("/api/get_switch", methods=["GET"])
+def get_switch():
+    name = request.args.get("name")
+    switch = collection.find_one({"name": name}, {"_id": 0})
+    if not switch:
+        return {"error": "Not found"}, 404
+    return switch
+
 @app.route("/api/switch-names")
 def get_switch_names():
     names = collection.distinct("name")
