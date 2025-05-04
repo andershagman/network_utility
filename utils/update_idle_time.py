@@ -106,13 +106,26 @@ def update_idle_times(ip, name):
     total = len(updated_ports)
 
     port_status_map = {}
+
     for p in updated_ports:
-     pname = p["name"]
-     # Enklare namnval: ta sista siffran i portnamnet, eller använd som det är
-     shortname = pname.split("/")[-1] if "/" in pname else pname
-     port_status_map[shortname] = "connected" if p["status"] == "up" else "notused"
-     free = total - used
-     used_percent = round(100 * used / total, 1) if total else 0
+        pname = p["name"]
+        status = "connected" if p["status"] == "up" else "notused"
+
+        if "/" in pname:
+            parts = pname.split("/")
+            slot = parts[1]  # "0" = vanliga portar, "1" = uplinks
+            portnum = parts[-1]
+
+            if slot == "0":
+                shortname = portnum  # t.ex. "1", "2", ..., "48"
+            else:
+                shortname = f"U{portnum}"  # t.ex. "U1", "U2", ...
+        else:
+            shortname = pname  # Fallback
+
+        port_status_map[shortname] = status 
+        free = total - used
+        used_percent = round(100 * used / total, 1) if total else 0
 
     col.update_one(
         {"name": name},

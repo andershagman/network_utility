@@ -37,6 +37,7 @@ fetch("/api/switch-names")
   });
 
 function fetchPortinfo() {
+	console.log("fetchPortinfo körs");
   const name = document.getElementById("switch-name").value;
   if (!name) return;
 
@@ -51,6 +52,7 @@ function fetchPortinfo() {
   })
   .then(resp => resp.json())
   .then(data => {
+	  console.log("Svar från /api/fetch-portinfo:", data);
     if (data.status === "ok") {
       loadSwitch(name); // 👈 Laddar ny data efter SNMP-körning
     } else {
@@ -60,6 +62,7 @@ function fetchPortinfo() {
 }
 
 function loadSwitch(name) {
+	console.log("loadSwitch körs med", name);
   fetch(`/api/get_switch?name=${encodeURIComponent(name)}`)
     .then(resp => resp.json())
     .then(data => {
@@ -67,10 +70,12 @@ function loadSwitch(name) {
         document.getElementById("status-msg").innerText = "Fel: " + data.error;
       } else {
 	console.log("Renderar switch med data:", data);
-        // 🧠 Korrigera portfältet om det inte redan finns
-        if (!data.ports && data.port_status_map) {
+
+	// Sätt ports = port_status_map om det finns
+        if (data.port_status_map) {
           data.ports = data.port_status_map;
         }
+
         renderSwitches([data]); // 👈 Din funktion som visar switch-layout
         document.getElementById("status-msg").innerText = "Uppdaterad från SNMP!";
       }

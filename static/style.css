@@ -382,3 +382,6 @@ table.left-align th {
     .notused {
       background-color: orange;
     }
+    .notconnected {
+      background-color: black;
+    }
