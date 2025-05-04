@@ -40,6 +40,8 @@ def extract_value(line):
     return line.split(":")[-1].strip()
 
 def update_idle_times(ip, name):
+    print(f"Startar uppdatering för {name} ({ip})")
+
     descrs = snmp_walk(ip, OID_IFDESCR)
     statuses = snmp_walk(ip, OID_IFOPERSTATUS)
     lastchanges = snmp_walk(ip, OID_IFLASTCHANGE)
@@ -69,6 +71,8 @@ def update_idle_times(ip, name):
     db = client[DB_NAME]
     col = db[COLLECTION]
     doc = col.find_one({"name": name})
+ 
+    print(f"Hämtade dokument för {name}: {doc}")
 
     old_ports = {p["name"]: p for p in doc.get("ports", [])}
     last_uptime = doc.get("switch_uptime", 0)
@@ -100,13 +104,21 @@ def update_idle_times(ip, name):
         })
 
     total = len(updated_ports)
-    free = total - used
-    used_percent = round(100 * used / total, 1) if total else 0
+
+    port_status_map = {}
+    for p in updated_ports:
+     pname = p["name"]
+     # Enklare namnval: ta sista siffran i portnamnet, eller använd som det är
+     shortname = pname.split("/")[-1] if "/" in pname else pname
+     port_status_map[shortname] = "connected" if p["status"] == "up" else "notused"
+     free = total - used
+     used_percent = round(100 * used / total, 1) if total else 0
 
     col.update_one(
         {"name": name},
         {"$set": {
             "ports": updated_ports,
+            "port_status_map": port_status_map,  # <--- Lägg till denna
             "used": used,
             "free": free,
             "used_percent": used_percent,
@@ -121,4 +133,5 @@ if __name__ == "__main__":
     col = client[DB_NAME][COLLECTION]
     for switch in col.find():
         if "name" in switch and "ip" in switch:
+            print(f"Skriver {len(updated_ports)} portar till databasen.")
             update_idle_times(switch["ip"], switch["name"])

@@ -2,6 +2,11 @@ from flask import Flask, render_template, request, redirect, url_for, session, j
 from utils.update_idle_time import update_idle_times
 from pymongo import MongoClient
 import json
+from bson import ObjectId
+
+def convert_objectid(doc):
+    doc["_id"] = str(doc["_id"])
+    return doc
 
 app = Flask(__name__)
 app.secret_key = 'hemlig-nyckel'
@@ -31,6 +36,11 @@ def fetch_portinfo():
         return {"error": "Switch not found or missing IP"}, 404
 
     update_idle_times(switch["ip"], switch["name"])
+
+    updated_switch = collection.find_one({"name": name})
+    if not updated_switch:
+        return {"error": "Failed to retrieve updated data"}, 500
+
     return {"status": "ok"}
 
 @app.route("/api/get_switch", methods=["GET"])

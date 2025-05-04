@@ -66,7 +66,12 @@ function loadSwitch(name) {
       if (data.error) {
         document.getElementById("status-msg").innerText = "Fel: " + data.error;
       } else {
-        renderSwitch(data); // 👈 Din funktion som visar switch-layout
+	console.log("Renderar switch med data:", data);
+        // 🧠 Korrigera portfältet om det inte redan finns
+        if (!data.ports && data.port_status_map) {
+          data.ports = data.port_status_map;
+        }
+        renderSwitches([data]); // 👈 Din funktion som visar switch-layout
         document.getElementById("status-msg").innerText = "Uppdaterad från SNMP!";
       }
     });
