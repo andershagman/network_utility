@@ -194,7 +194,8 @@ document.addEventListener("DOMContentLoaded", () => {
         data.forEach(sw => {
             const stackMap = sw.port_status_map || {};
             const stackIds = Object.keys(stackMap).sort((a, b) => parseInt(a) - parseInt(b));
-    
+            const multiple = stackIds.length > 1;
+
             stackIds.forEach(stackId => {
                 const ports = {};
                 for (const [key, value] of Object.entries(stackMap[stackId])) {
@@ -205,7 +206,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 const groups = Math.ceil(portKeys.length / 12);
     
                 createSwitch({
-                    name: `${sw.name} (Switch ${stackId})`,
+                    name: multiple ? `${sw.name} sw${stackId}` : sw.name,
                     groups,
                     ports
                 });
