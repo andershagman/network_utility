@@ -78,26 +78,56 @@ document.addEventListener("DOMContentLoaded", () => {
     function createUplinkGroup(uplinkStatus) {
         const group = document.createElement("div");
         group.className = "uplink-group";
-
+    
         const row1 = document.createElement("div");
         row1.className = "port-row";
         const row2 = document.createElement("div");
         row2.className = "port-row";
-
-        for (let i = 1; i <= 8; i++) {
-            const label = "U" + i;
-            const status = uplinkStatus[label] || "notconnected";
-            const port = createPort(label, status);
-
-            if (i % 2 === 1) {
+    
+        const ports = Object.entries(uplinkStatus)
+            .filter(([label, _]) => label.startsWith("U"))
+            .sort(([a], [b]) => parseInt(a.slice(1)) - parseInt(b.slice(1)));
+    
+        const portCount = ports.length;
+    
+        if (portCount === 8) {
+            // Full 8-port uplinkmodul, 2 rader à 4 portar
+            ports.forEach(([label, status], index) => {
+                const port = createPort(label, status);
+                if (index < 4) {
+                    row1.appendChild(port);
+                } else {
+                    row2.appendChild(port);
+                }
+            });
+            group.appendChild(row1);
+            group.appendChild(row2);
+        } else if (portCount === 4) {
+            // 4-portars modul, centrera i höjdled (en rad)
+            const spacer = document.createElement("div");
+            spacer.className = "port-row empty-row";
+            group.appendChild(spacer); // Top padding
+    
+            const middleRow = document.createElement("div");
+            middleRow.className = "port-row";
+            ports.forEach(([label, status]) => {
+                const port = createPort(label, status);
+                middleRow.appendChild(port);
+            });
+            group.appendChild(middleRow);
+    
+            const spacer2 = document.createElement("div");
+            spacer2.className = "port-row empty-row";
+            group.appendChild(spacer2); // Bottom padding
+        } else {
+            // Hantera övrigt antal (visa i övre raden bara)
+            ports.forEach(([label, status]) => {
+                const port = createPort(label, status);
                 row1.appendChild(port);
-            } else {
-                row2.appendChild(port);
-            }
+            });
+            group.appendChild(row1);
         }
-
-        group.appendChild(row1);
-        group.appendChild(row2);
+    
         return group;
     }
 

@@ -385,3 +385,12 @@ table.left-align th {
     .notconnected {
       background-color: black;
     }
+    .empty-port {
+    width: 20px;
+    height: 20px;
+    margin: 2px;
+    background-color: transparent;
+    }
+    .empty-row {
+    height: 24px; /* Justera beroende på portstorlek */
+    }
