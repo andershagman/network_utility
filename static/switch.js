@@ -133,6 +133,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function createSwitch({ name, groups, ports }) {
         console.log("createSwitch received ports:", ports);
+        console.log("createSwitch received groups:", groups);
 
         const sw = document.createElement("div");
         sw.className = "switch";
@@ -185,26 +186,29 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function renderSwitches(data) {
         console.log("renderSwitches received:", data);
-
-        // Remove dummy switches
+    
+        // Ta bort dummy
         document.querySelectorAll(".switch.dummy").forEach(el => el.remove());
         container.innerHTML = "";
-
+    
         data.forEach(sw => {
-            // Convert port_status_map to ports with string keys
-            const ports = {};
-            for (const [key, value] of Object.entries(sw.port_status_map || {})) {
-                ports[String(key)] = value;
-            }
-
-            // Calculate number of groups
-            const portKeys = Object.keys(ports).filter(k => !k.startsWith("U"));
-            const groups = Math.ceil(portKeys.length / 12);
-
-            createSwitch({
-                name: sw.name,
-                groups,
-                ports
+            const stackMap = sw.port_status_map || {};
+            const stackIds = Object.keys(stackMap).sort((a, b) => parseInt(a) - parseInt(b));
+    
+            stackIds.forEach(stackId => {
+                const ports = {};
+                for (const [key, value] of Object.entries(stackMap[stackId])) {
+                    ports[String(key)] = value;
+                }
+    
+                const portKeys = Object.keys(ports).filter(k => !k.startsWith("U"));
+                const groups = Math.ceil(portKeys.length / 12);
+    
+                createSwitch({
+                    name: `${sw.name} (Switch ${stackId})`,
+                    groups,
+                    ports
+                });
             });
         });
     }

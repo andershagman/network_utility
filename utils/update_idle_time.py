@@ -115,38 +115,33 @@ def update_idle_times(ip, name):
 
     # Efter att updated_ports har byggts
     port_status_map = {}
-
+    
     for p in updated_ports:
         pname = p["name"]
         status = p["status"]
         idle = p["idle_time"]
-
-        if status == "up":
-            state = "connected"
-        elif idle > 0:
-            state = "notconnected"
-        else:
-            # Här kan du kolla om porten funnits i old_ports – annars är den "notused"
+    
+        # Standardvärde
+        state = "connected" if status == "up" else "notconnected"
+        if status != "up" and idle == 0:
             old_idle = old_ports.get(pname, {}).get("idle_time", None)
-            if old_idle is None:
-                state = "notused"
-            else:
-                state = "notconnected"
-
-        # Kortnamn som tidigare
-        if "/" in pname:
-            parts = pname.split("/")
-            slot = parts[1]
-            portnum = parts[-1]
-            shortname = portnum if slot == "0" else f"U{portnum}"
+            state = "notused" if old_idle is None else "notconnected"
+    
+        # Extrahera stack-nummer och portnummer
+        match = re.match(r".*?(\d+)/(\d+)/(\d+)", pname)
+        if match:
+            stack_num, module_num, port_num = match.groups()
+            shortname = f"U{port_num}" if module_num != "0" else port_num
+            if stack_num not in port_status_map:
+                port_status_map[stack_num] = {}
+            port_status_map[stack_num][shortname] = state
         else:
-            shortname = pname
-
-        port_status_map[shortname] = state
-        
+            # Fallback om formatet inte matchar
+            port_status_map.setdefault("1", {})[pname] = state
+            
         free = total - used
         used_percent = round(100 * used / total, 1) if total else 0
-
+    
     col.update_one(
         {"name": name},
         {"$set": {
