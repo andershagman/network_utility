@@ -164,7 +164,20 @@ table.left-align th {
   gap: 10px;
 }
 
-.cancel-button {
+.modal-buttons.split {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+  gap: 10px;
+}
+
+.left-buttons,
+.right-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.delete-button {
   padding: 8px 16px;
   background-color: #dc3545; /* röd */
   border: none;
@@ -173,8 +186,21 @@ table.left-align th {
   cursor: pointer;
 }
 
-.cancel-button:hover {
+.delete-button:hover {
   background-color: #c82333;
+}
+
+.cancel-button {
+  padding: 8px 16px;
+  background-color: #ffa31a; /* orange */
+  border: none;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.cancel-button:hover {
+  background-color: #cc7a00;
 }
 
 .save-button {
