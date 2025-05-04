@@ -55,8 +55,9 @@ def update_idle_times(ip, name):
     print(f"{name}: {len(lastchanges)} ifLastChange-poster")
 
     if not (descrs and statuses and lastchanges and current_uptime):
-        print(f"{name}: SNMP timeout or missing data.")
-        return
+        error_msg = f"{name}: SNMP timeout or missing data."
+        print(error_msg)
+        raise RuntimeError(error_msg)
 
     port_data = {}
     for line in descrs:

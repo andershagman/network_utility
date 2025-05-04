@@ -30,18 +30,30 @@ def fetch_portinfo():
     data = request.json
     name = data.get("name")
 
+    if not name:
+        return {"error": "Missing 'name' parameter in request body"}, 400
+
+    # Hitta switch i databasen
     switch = collection.find_one({"name": name})
 
+    # Om switchen inte finns eller saknar IP-adress
     if not switch or "ip" not in switch:
-        return {"error": "Switch not found or missing IP"}, 404
+        return {"error": f"Switch '{name}' not found or missing IP address"}, 404
 
-    update_idle_times(switch["ip"], switch["name"])
+    # Uppdatera idle times
+    try:
+        update_idle_times(switch["ip"], switch["name"])
+    except RuntimeError as e:
+        return {"error": str(e)}, 500
 
+    # Hämta uppdaterad switchinformation
     updated_switch = collection.find_one({"name": name})
-    if not updated_switch:
-        return {"error": "Failed to retrieve updated data"}, 500
 
-    return {"status": "ok"}
+    if not updated_switch:
+        return {"error": f"Failed to retrieve updated data for switch '{name}'"}, 500
+
+    # Om allt gick bra
+    return {"status": "ok", "portInfo": updated_switch.get("port_status_map", {})}
 
 @app.route("/api/get_switch", methods=["GET"])
 def get_switch():
