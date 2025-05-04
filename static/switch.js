@@ -43,6 +43,16 @@ document.addEventListener("DOMContentLoaded", () => {
         const port = document.createElement("div");
         port.className = `port ${status}`;
         port.innerText = label;
+    
+        // Lägg till tooltip
+        if (status === "used") {
+            port.title = "Använd";
+        } else if (status === "notconnected") {
+            port.title = "Ledig";
+        } else {
+            port.title = status; // fallback, om du har fler statuskoder
+        }
+    
         return port;
     }
 
