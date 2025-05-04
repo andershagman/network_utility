@@ -76,6 +76,8 @@ def switches():
 
 @app.route("/stats")
 def stats():
+    if not session.get('logged_in'):
+        return redirect(url_for('login'))
     switches = collection.find({}, {"name": 1, "ip": 1,  "used": 1, "free": 1, "used_percent": 1, "_id": 0})
     data = [
         {
@@ -98,6 +100,8 @@ def stats():
 
 @app.route("/users")
 def users():
+    if not session.get('logged_in'):
+        return redirect(url_for('login'))
     data = [
         {"username": "alice", "email": "alice@example.com", "role": "admin"},
         {"username": "bob", "email": "bob@example.com", "role": "user"},
@@ -112,6 +116,8 @@ def users():
 
 @app.route("/groups")
 def groups():
+    if not session.get('logged_in'):
+        return redirect(url_for('login'))
     data = [
         {"name": "Nätverksadmin", "members": 5},
         {"name": "Gäster", "members": 12},
@@ -125,6 +131,8 @@ def groups():
 
 @app.route("/permissions")
 def permissions():
+    if not session.get('logged_in'):
+        return redirect(url_for('login'))
     data = [
         {"permission": "access_ports", "description": "Kan se portar"},
         {"permission": "edit_users", "description": "Kan ändra användare"},
@@ -137,6 +145,8 @@ def permissions():
 
 @app.route('/about')
 def about():
+    if not session.get('logged_in'):
+        return redirect(url_for('login'))
     return render_template('about.html')
 
 @app.route('/logout')

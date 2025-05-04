@@ -31,5 +31,15 @@
 
   <script src="{{ url_for('static', filename='menu.js') }}"></script>
   {% block scripts %}{% endblock %}
+  <div id="settingsModal" class="modal">
+    <div class="modal-content">
+      <h3 id="settingsModalTitle">Inställningar</h3>
+      <div id="settingsModalBody"></div>
+      <div class="modal-footer">
+        <button id="settingsOkBtn">OK</button>
+        <button id="cancelBtn">Avbryt</button>
+      </div>
+    </div>
+  </div>
 </body>
 </html>
