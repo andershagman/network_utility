@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for, session, jsonify
+from utils.update_idle_time import update_idle_times
 from pymongo import MongoClient
 import json
 
@@ -18,6 +19,19 @@ def login():
         else:
             return render_template('login.html', error='Fel användarnamn eller lösenord')
     return render_template('login.html')
+
+@app.route("/api/fetch-portinfo", methods=["POST"])
+def fetch_portinfo():
+    data = request.json
+    name = data.get("name")
+
+    switch = collection.find_one({"name": name})
+
+    if not switch or "ip" not in switch:
+        return {"error": "Switch not found or missing IP"}, 404
+
+    update_idle_times(switch["ip"], switch["name"])
+    return {"status": "ok"}
 
 @app.route("/api/switch-names")
 def get_switch_names():

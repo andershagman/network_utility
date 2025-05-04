@@ -5,7 +5,9 @@
     <h2>Switch:</h2>
     <input type="text" id="switch-name" list="switch-list" placeholder="Ange switchnamn">
     <datalist id="switch-list"></datalist>
-    <button id="fetchButton">Hämta portinfo</button>
+    <button onclick="fetchPortinfo()">Hämta portinfo</button>
+
+    <div id="status-msg"></div>
   </div>
   <div id="container"></div>
 <div id="switches">
@@ -33,6 +35,42 @@ fetch("/api/switch-names")
       datalist.appendChild(option);
     });
   });
+
+function fetchPortinfo() {
+  const name = document.getElementById("switch-name").value;
+  if (!name) return;
+
+  document.getElementById("status-msg").innerText = "Hämtar SNMP-data...";
+
+  fetch("/api/fetch-portinfo", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ name })
+  })
+  .then(resp => resp.json())
+  .then(data => {
+    if (data.status === "ok") {
+      loadSwitch(name); // 👈 Laddar ny data efter SNMP-körning
+    } else {
+      document.getElementById("status-msg").innerText = data.error || "Fel vid SNMP-hämtning.";
+    }
+  });
+}
+
+function loadSwitch(name) {
+  fetch(`/api/get_switch?name=${encodeURIComponent(name)}`)
+    .then(resp => resp.json())
+    .then(data => {
+      if (data.error) {
+        document.getElementById("status-msg").innerText = "Fel: " + data.error;
+      } else {
+        renderSwitch(data); // 👈 Din funktion som visar switch-layout
+        document.getElementById("status-msg").innerText = "Uppdaterad från SNMP!";
+      }
+    });
+}
 </script>
 
 {% endblock %}
