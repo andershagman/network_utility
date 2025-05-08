@@ -114,4 +114,24 @@ document.addEventListener("DOMContentLoaded", () => {
       btn.addEventListener("click", () => openAddModal(type));
     }
   });
+  const addItemBtn = document.getElementById("addItemBtn");
+  if (addItemBtn) {
+    addItemBtn.addEventListener("click", () => {
+      const path = window.location.pathname;
+
+      let type = "";
+      if (path.includes("/users")) {
+        type = "users";
+      } else if (path.includes("/groups")) {
+        type = "groups";
+      } else if (path.includes("/permissions")) {
+        type = "permissions";
+      } else {
+        console.error("Okänd sida – ingen typ kunde bestämmas.");
+        return;
+      }
+
+      openAddModal(type);
+    });
+  }
 });
