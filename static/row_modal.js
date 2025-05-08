@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
+  // Lyssnar på klick på tabellen för att redigera en post
   const table = document.getElementById("dataTable");
-
   if (table) {
     table.addEventListener("click", (e) => {
       const row = e.target.closest("tr");
@@ -18,11 +18,11 @@ document.addEventListener("DOMContentLoaded", () => {
       }
       html += '</form>';
 
-      // Fyll i rowModal
+      // Fyll i modal med formulärinnehåll
       document.getElementById("rowModalTitle").innerText = "Redigera post";
       document.getElementById("rowModalBody").innerHTML = html;
 
-      // Visa modalen
+      // Visa modal
       const modal = document.getElementById("rowModal");
       if (modal) modal.style.display = "block";
     });
@@ -37,16 +37,16 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // Inuti klickhanteraren efter modalen visats
+  // Hantera radering av posten
   const deleteBtn = document.getElementById("rowDeleteBtn");
   if (deleteBtn) {
     deleteBtn.addEventListener("click", function (e) {
       const btn = e.target;
-  
+
       if (!btn.dataset.confirmed) {
         btn.textContent = "Säkert?";
         btn.dataset.confirmed = "true";
-  
+
         // Återställ efter 3 sekunder
         setTimeout(() => {
           btn.textContent = "Radera";
@@ -59,60 +59,59 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-});
+  // Lägg till ny post (för användare, grupper, behörigheter)
+  function openAddModal(type) {
+    let rowData;
+    const templates = {
+      users: {
+        username: "",
+        email: "",
+        role: "user",
+        active: true,
+      },
+      groups: {
+        name: "",
+        description: "",
+        members: [],
+      },
+      permissions: {
+        name: "",
+        description: "",
+        level: 0,
+      },
+    };
 
-// row_modal.js
+    // Hämta mall beroende på typ
+    rowData = templates[type];
 
-let currentDataType = "";
-
-function openEmptyModal(type) {
-  currentDataType = type;
-
-  // Förifylld mall beroende på typ
-  const templates = {
-    users: {
-      username: "",
-      email: "",
-      role: "user",
-      active: true,
-    },
-    groups: {
-      name: "",
-      description: "",
-      members: [],
-    },
-    permissions: {
-      name: "",
-      description: "",
-      level: 0,
-    },
-  };
-
-  const rowData = templates[type];
-
-  let html = '<form id="editForm">';
-  for (const key in rowData) {
-    let value = rowData[key];
-    if (Array.isArray(value)) {
-      html += `<label for="${key}">${key}</label><input id="${key}" name="${key}" value="" placeholder="kommaseparerad lista" /><br>`;
-    } else if (typeof value === "boolean") {
-      html += `<label for="${key}">${key}</label><input type="checkbox" id="${key}" name="${key}" ${value ? "checked" : ""} /><br>`;
-    } else {
-      html += `<label for="${key}">${key}</label><input id="${key}" name="${key}" value="${value}" /><br>`;
+    // Bygg formulärinnehåll för att lägga till ny post
+    let html = '<form id="editForm">';
+    for (const key in rowData) {
+      let value = rowData[key];
+      if (Array.isArray(value)) {
+        html += `<label for="${key}">${key}</label><input id="${key}" name="${key}" value="" placeholder="kommaseparerad lista" /><br>`;
+      } else if (typeof value === "boolean") {
+        html += `<label for="${key}">${key}</label><input type="checkbox" id="${key}" name="${key}" ${value ? "checked" : ""} /><br>`;
+      } else {
+        html += `<label for="${key}">${key}</label><input id="${key}" name="${key}" value="${value}" /><br>`;
+      }
     }
-  }
-  html += '</form>';
+    html += '</form>';
 
-  document.getElementById("rowModalTitle").innerText = `Ny ${type.slice(0, -1)}`;
-  document.getElementById("rowModalBody").innerHTML = html;
-  document.getElementById("rowModal").style.display = "block";
-}
+    // Fyll i modal med ny postdata
+    document.getElementById("rowModalTitle").innerText = `Ny ${type.slice(0, -1)}`;
+    document.getElementById("rowModalBody").innerHTML = html;
 
-// Eventlyssnare för knappen Lägg till
-["users", "groups", "permissions"].forEach((type) => {
-  const btn = document.getElementById(`${type}AddBtn`);
-  if (btn) {
-    btn.addEventListener("click", () => openEmptyModal(type));
+    // Visa modal
+    const modal = document.getElementById("rowModal");
+    if (modal) modal.style.display = "block";
   }
+
+  // Lägg till eventlyssnare för knappar för att lägga till nya poster
+  ["users", "groups", "permissions"].forEach((type) => {
+    const btn = document.getElementById(`${type}AddBtn`);
+    if (btn) {
+      btn.addEventListener("click", () => openAddModal(type));
+    }
+  });
 });
-

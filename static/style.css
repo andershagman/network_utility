@@ -15,7 +15,7 @@ body {
     }
 
     table#dataTable th, table#dataTable td {
-      padding: 8px;
+      padding: 6px;
       text-align: left;
       font-size: 16px;
     }
@@ -92,7 +92,7 @@ table.left-align th {
 .dataTables_length select {
   margin-left: 10px;
   padding: 4px;
-  margin: 2px;
+  margin: 5px;
   border-radius: 4px;
   border: 1px solid #ccc;
 }
