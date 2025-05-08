@@ -48,7 +48,7 @@ table.left-align th {
 #dataTable_wrapper {
   width: calc(100% - 200px); /* Justera beroende på menybredd */
   margin-left: 200px;        /* Skjut hela tabellen åt höger */
-  margin-top: 40px;
+  margin-top: 15px;
 }
 
 #dataTable th.right-align {
@@ -95,6 +95,26 @@ table.left-align th {
   margin: 2px;
   border-radius: 4px;
   border: 1px solid #ccc;
+}
+
+/* Placering av header och knapp */
+.button-container {
+  text-align: right;
+  margin-bottom: 10px;
+}
+
+#addItemBtn {
+  padding: 8px 12px;
+  align-items: right;
+  background-color: #4CAF50;  /* Grön bakgrund, ändra efter behov */
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+#addItemBtn:hover {
+  background-color: #45a049; /* Mörkare nyans vid hover */
 }
 
 /* Stil för radioknapparna som håller text och cirkel i linje */

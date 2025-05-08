@@ -60,3 +60,59 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
 });
+
+// row_modal.js
+
+let currentDataType = "";
+
+function openEmptyModal(type) {
+  currentDataType = type;
+
+  // Förifylld mall beroende på typ
+  const templates = {
+    users: {
+      username: "",
+      email: "",
+      role: "user",
+      active: true,
+    },
+    groups: {
+      name: "",
+      description: "",
+      members: [],
+    },
+    permissions: {
+      name: "",
+      description: "",
+      level: 0,
+    },
+  };
+
+  const rowData = templates[type];
+
+  let html = '<form id="editForm">';
+  for (const key in rowData) {
+    let value = rowData[key];
+    if (Array.isArray(value)) {
+      html += `<label for="${key}">${key}</label><input id="${key}" name="${key}" value="" placeholder="kommaseparerad lista" /><br>`;
+    } else if (typeof value === "boolean") {
+      html += `<label for="${key}">${key}</label><input type="checkbox" id="${key}" name="${key}" ${value ? "checked" : ""} /><br>`;
+    } else {
+      html += `<label for="${key}">${key}</label><input id="${key}" name="${key}" value="${value}" /><br>`;
+    }
+  }
+  html += '</form>';
+
+  document.getElementById("rowModalTitle").innerText = `Ny ${type.slice(0, -1)}`;
+  document.getElementById("rowModalBody").innerHTML = html;
+  document.getElementById("rowModal").style.display = "block";
+}
+
+// Eventlyssnare för knappen Lägg till
+["users", "groups", "permissions"].forEach((type) => {
+  const btn = document.getElementById(`${type}AddBtn`);
+  if (btn) {
+    btn.addEventListener("click", () => openEmptyModal(type));
+  }
+});
+
