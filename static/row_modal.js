@@ -22,6 +22,8 @@ document.addEventListener("DOMContentLoaded", () => {
       document.getElementById("rowModalTitle").innerText = "Redigera post";
       document.getElementById("rowModalBody").innerHTML = html;
 
+      const deleteBtn = document.getElementById("rowDeleteBtn");
+      if (deleteBtn) deleteBtn.style.display = "inline-block";
       // Visa modal
       const modal = document.getElementById("rowModal");
       if (modal) modal.style.display = "block";
@@ -65,6 +67,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const templates = {
       users: {
         username: "",
+        password: "",
         email: "",
         role: "user",
         active: true,
@@ -101,6 +104,10 @@ document.addEventListener("DOMContentLoaded", () => {
     // Fyll i modal med ny postdata
     document.getElementById("rowModalTitle").innerText = `Ny ${type.slice(0, -1)}`;
     document.getElementById("rowModalBody").innerHTML = html;
+
+    // Dölj delete-knappen vid ny post
+    const deleteBtn = document.getElementById("rowDeleteBtn");
+    if (deleteBtn) deleteBtn.style.display = "none";
 
     // Visa modal
     const modal = document.getElementById("rowModal");
